@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17201c">
+  <meta name="description" content="Discover local events in Metro Vancouver and Halifax, follow Langley calendars, and plan outings privately.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://vancouver.hasthings.com https://halifax.hasthings.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Event Radar · CoolCode</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#workbench">Skip to event discovery</a>
+  <header class="masthead"><div class="site"><a class="brand" href="https://coolcode.ca/"><span aria-hidden="true">&gt;_</span>CoolCode.ca</a><nav aria-label="Help"><a href="#calendars">Venue calendars</a></nav></div></header>
+  <section class="hero"><div class="site">
+    <p class="eyebrow">Local events</p>
+    <h1>Event Radar<span>.</span></h1>
+    <p>Find a show, community event or night out around Vancouver and Halifax. Browse Langley calendars and collect plans in a calendar file.</p>
+  </div></section>
+  <main class="site" id="workbench">
+    <section class="panel filters-panel" aria-label="Filter events">
+      <div class="results-head"><h2 id="view-heading">Explore events</h2><button type="button" class="secondary" id="refresh">Refresh live listings</button></div>
+      <div class="regions" aria-label="Region">
+        <button type="button" data-region="vancouver" aria-pressed="true">Metro Vancouver</button>
+        <button type="button" data-region="langley" aria-pressed="false">Langley</button>
+        <button type="button" data-region="halifax" aria-pressed="false">Halifax</button>
+        <button type="button" data-region="imported" aria-pressed="false">My calendars</button>
+      </div>
+      <div class="control-grid">
+        <div><label for="event-query">Title, venue or tag</label><input type="search" id="event-query" placeholder="Try theatre, Linux or library"></div>
+        <div><label for="when">When</label><select id="when"><option value="14">Next 14 days</option><option value="1">Today</option><option value="7">Next 7 days</option><option value="30">Next 30 days</option><option value="all">All upcoming</option></select></div>
+        <div><label for="category">Category</label><select id="category"><option value="">All categories</option></select></div>
+      </div>
+    </section>
+    <p id="feed-status" class="status" role="status">Opening the Metro Vancouver event feed…</p>
+    <section id="events" class="event-stack" aria-label="Matching events"></section>
+    <div id="paging" hidden><button type="button" class="secondary" id="more">Show more events</button></div>
+    <section class="panel source" aria-labelledby="import-heading">
+      <h2 id="import-heading">Open a calendar file</h2>
+      <p class="fine">Bring an .ics file from a venue or your calendar. Imported events stay in this tab and disappear when you leave. Choose a timezone for events that came without one.</p>
+      <div class="file-row">
+        <div><label for="ical">Calendar file</label><input type="file" id="ical" accept=".ics,.ical,text/calendar" multiple></div>
+        <div><label for="zone">Fallback timezone</label><select id="zone"><option value="America/Vancouver">Vancouver / Langley</option><option value="America/Halifax">Halifax</option></select></div>
+        <button type="button" class="secondary" id="clear-imports" disabled>Clear imports</button>
+      </div>
+      <p id="import-status" class="fine" role="status"></p>
+    </section>
+    <section class="panel source" aria-labelledby="plan-heading">
+      <div class="results-head"><h2 id="plan-heading" tabindex="-1">My plans</h2><button type="button" class="primary" id="download" disabled>Download calendar (.ics)</button></div>
+      <p class="fine">Select showtimes to put them in a single calendar file. This list is temporary, so download it before leaving.</p>
+      <ul id="plan-list"></ul>
+    </section>
+    <section class="panel source" id="calendars" aria-labelledby="calendar-heading">
+      <h2 id="calendar-heading">Venue calendars</h2>
+      <p class="fine">Check these source calendars for changes, pricing, ticket availability and shows beyond the live feed.</p>
+      <div class="directory">
+        <div><h3>Metro Vancouver</h3><ul><li><a href="https://artsclub.com/shows/">Arts Club Theatre Company ↗</a></li><li><a href="https://tickets.artsclub.com/calendar/">Arts Club showtime calendar ↗</a></li><li><a href="https://vanlug.ca/events/">Vancouver Linux Users Group ↗</a></li></ul></div>
+        <div><h3>Langley</h3><ul><li><a href="https://www.tol.ca/en/events-and-programs.aspx">Township events and programs ↗</a></li><li><a href="https://www.langleycity.ca/community-culture/events">City of Langley events ↗</a></li><li><a href="https://www.fvrl.bc.ca/events">Fraser Valley Regional Library ↗</a></li></ul></div>
+        <div><h3>Halifax</h3><ul><li><a href="https://halifax.bibliocommons.com/v2/events">Halifax Public Libraries ↗</a></li><li><a href="https://halifax.hasthings.com/venues">Halifax venues ↗</a></li></ul></div>
+      </div>
+    </section>
+    <aside class="panel source" id="sources">
+      <h2>Source and coverage</h2>
+      <p>Data: <a href="https://hasthings.com/">Has Things (hasthings.com)</a>. The <a href="https://vancouver.hasthings.com/feeds/events.json">Vancouver</a> and <a href="https://halifax.hasthings.com/feeds">Halifax</a> feeds supply listing metadata under <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>. Dates, venues and status reflect the most recent listing available to the feed. Feed requests go to Has Things. Search filters, imports and plans run on this device.</p>
+      <p>Langley has direct venue calendars and local imports. A source date without a clock time is marked “Time unlisted.” Check the organizer before travelling or buying tickets.</p>
+    </aside>
+    <noscript><p class="empty">Turn on JavaScript to load live feeds or use the direct venue calendars above.</p></noscript>
+  </main>
+  <footer><div class="site"><a href="https://coolcode.ca/">CoolCode.ca</a><a href="https://github.com/jsdyer/eventradar">Application source on GitHub ↗</a></div></footer>
+</body>
+</html>
