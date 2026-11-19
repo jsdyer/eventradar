@@ -1,5 +1,7 @@
 import { addDays, calendarFile, dayInZone, importCalendar, normalizeFeed, regions } from './model.mjs';
 
+import { provinces } from './regions.mjs';
+
 const get = id => document.getElementById(id);
 const status = get('feed-status');
 const results = get('events');
@@ -7,6 +9,7 @@ const when = get('when');
 const query = get('event-query');
 const category = get('category');
 const refresh = get('refresh');
+const cityPicker = get('region');
 const importStatus = get('import-status');
 const plan = new Map();
 const imports = new Map();
@@ -162,7 +165,7 @@ function render() {
   }
   const source = feeds.get(region);
   if (region !== 'imported' && !source?.data) {
-    if (source?.error) setStatus('The live feed is unavailable right now. You can refresh or check the source calendars.', true, link('Venue calendars ↓', '#calendars'));
+    if (source?.error) setStatus('This city’s feed is unavailable right now. Try refreshing or open the city directory.', true, link(regions[region].name + ' on Has Things ↗', new URL(regions[region].url).origin));
     else setStatus('Opening the ' + regions[region].name + ' event feed…');
     return;
   }
@@ -171,12 +174,14 @@ function render() {
   const matches = filterEvents(list);
   const noun = matches.length === 1 ? ' event' : ' events';
   let note = matches.length ? matches.length + noun + ' match.' : 'No events match these filters.';
+  if (source?.data && !list.length) note = 'The city feed currently lists no showtimes.';
   if (region === 'imported' && !list.length) note = 'No local events loaded. Open a calendar file below.';
   if (source?.loading) note += ' Refreshing…';
   if (source?.error) note += ' Refresh failed; showing the previous feed.';
   if (source?.data?.stamp) note += ' Feed generated ' + new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeStyle: 'short', timeZone: regions[region].zone }).format(source.data.stamp) + ' local time.';
-  if (source?.data?.truncated) note += ' The source feed limits the number of listed showtimes.';
-  setStatus(note, Boolean(source?.error));
+  if (source?.data?.windowDays) note += ' Source window: ' + source.data.windowDays + ' days.';
+  if (source?.data?.truncated) note += ' The source capped this feed. Later events may be missing.';
+  setStatus(note, Boolean(source?.error), source?.data ? link('Check the city directory ↗', new URL(regions[region].url).origin) : null);
   results.append(...matches.slice(0, pageLimit).map(eventCard));
   get('paging').hidden = pageLimit >= matches.length;
 }
@@ -204,13 +209,20 @@ async function loadFeed(key, force = false) {
 }
 
 function switchRegion(key) {
-  if (!['vancouver', 'langley', 'halifax', 'imported'].includes(key)) return;
+  if (key !== 'imported' && !Object.hasOwn(regions, key)) return;
   region = key;
   query.value = '';
   category.value = '';
   when.value = key === 'imported' ? 'all' : '14';
   pageLimit = 25;
-  for (const control of document.querySelectorAll('[data-region]')) control.setAttribute('aria-pressed', String(control.dataset.region === region));
+  cityPicker.value = key;
+  const url = new URL(location.href);
+  if (key === 'vancouver' || key === 'imported') url.searchParams.delete('city');
+  else url.searchParams.set('city', key);
+  if (url.href !== location.href) history.replaceState(null, '', url);
+  const source = get('source-feed');
+  source.href = regions[key]?.url || 'https://hasthings.com/';
+  source.textContent = regions[key]?.url ? regions[key].name + ' listings feed' : 'Canadian city directory';
   refresh.hidden = !regions[key]?.url;
   get('view-heading').textContent = key === 'imported' ? 'My imported calendars' : regions[key].name + ' events';
   const supportFilters = key !== 'langley';
@@ -274,7 +286,26 @@ function downloadPlans() {
   setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
-for (const control of document.querySelectorAll('[data-region]')) control.addEventListener('click', () => switchRegion(control.dataset.region));
+cityPicker.replaceChildren();
+const zones = new Map();
+for (const [province, cities] of Object.entries(provinces)) {
+  const group = document.createElement('optgroup');
+  group.label = province;
+  for (const [key] of cities) {
+    const city = regions[key];
+    group.append(new Option(city.name + (city.url ? '' : ' · venue calendars'), key));
+    if (!zones.has(city.zone)) zones.set(city.zone, city.zone.split('/')[1].replaceAll('_', ' '));
+  }
+  cityPicker.append(group);
+}
+cityPicker.append(new Option('My imported calendars', 'imported'));
+get('zone').replaceChildren(...[...zones].sort((a, b) => a[1].localeCompare(b[1])).map(([id, label]) => new Option(label, id)));
+get('zone').value = regions.vancouver.zone;
+cityPicker.addEventListener('change', () => {
+  const city = regions[cityPicker.value];
+  if (city) get('zone').value = city.zone;
+  switchRegion(cityPicker.value);
+});
 for (const control of [query, category, when]) control.addEventListener('input', () => { pageLimit = 25; render(); });
 get('more').addEventListener('click', () => {
   const previous = pageLimit;
@@ -293,4 +324,7 @@ get('clear-imports').addEventListener('click', () => {
   renderPlan();
   render();
 });
-switchRegion('vancouver');
+const initial = new URLSearchParams(location.search).get('city');
+const initialCity = Object.hasOwn(regions, initial) ? initial : 'vancouver';
+get('zone').value = regions[initialCity].zone;
+switchRegion(initialCity);

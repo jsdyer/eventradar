@@ -59,9 +59,8 @@ footer a{color:#254535}
 @media(max-width:34rem){.site{width:calc(100% - 1.3rem)}.search-row{grid-template-columns:1fr}.search-row .primary{justify-self:start}.masthead .site{min-height:3.4rem}main{padding-top:1rem}}
 .hero{background-image:linear-gradient(110deg,#17201c 28%,#17201ce8 55%,#3b4427cc),repeating-linear-gradient(90deg,transparent 0 11px,#a6ba8b 11px 12px)}
 .hero h1 span{color:var(--signal)}
-.regions{display:flex;gap:.3rem;flex-wrap:wrap;margin:.5rem 0 1rem}
-.regions button{border:1px solid var(--rule);border-radius:.32rem;background:var(--card);padding:.48rem .85rem;color:var(--ink);font-weight:650;cursor:pointer}
-.regions button[aria-pressed=true]{background:var(--pine);border-color:var(--pine);color:#edffdb}
+.region-picker{max-width:23rem;margin:.5rem 0 1rem}
+.region-picker label{display:block;margin-bottom:.25rem;font-weight:650;font-size:.88rem}
 .control-grid,.file-row,.directory{display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr;gap:.6rem}
 .directory{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:1rem}
 .control-grid label,.file-row label{display:block;margin-bottom:.25rem;font-weight:650;font-size:.88rem}

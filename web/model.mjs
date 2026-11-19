@@ -1,8 +1,6 @@
-export const regions = {
-  vancouver: { name: 'Metro Vancouver', zone: 'America/Vancouver', url: 'https://vancouver.hasthings.com/feeds/events.json' },
-  langley: { name: 'Langley', zone: 'America/Vancouver' },
-  halifax: { name: 'Halifax', zone: 'America/Halifax', url: 'https://halifax.hasthings.com/feeds/events.json' },
-};
+import { regions } from './regions.mjs';
+export { regions };
+
 const DAY_MS = 86_400_000;
 const catalogueLicence = 'Data: Has Things (hasthings.com) · ODbL 1.0 https://opendatacommons.org/licenses/odbl/1-0/';
 
@@ -34,7 +32,7 @@ function safeLink(value) {
 }
 
 export function normalizeFeed(raw, key) {
-  if (raw?.city?.slug !== key || !Array.isArray(raw.items) || !regions[key]?.url) throw new Error('Unexpected source response');
+  if (raw?.city?.slug !== key || raw.city.countryCode !== 'CA' || !Array.isArray(raw.items) || !regions[key]?.url) throw new Error('Unexpected source response');
   const { zone, name } = regions[key];
   const events = new Map();
   for (const row of raw.items.slice(0, 5000)) {
@@ -58,6 +56,7 @@ export function normalizeFeed(raw, key) {
     events: [...events.values()],
     stamp: Number.isFinite(Date.parse(raw.generatedAt)) ? Date.parse(raw.generatedAt) : null,
     truncated: raw.truncated === true,
+    windowDays: Number.isInteger(raw.windowDays) && raw.windowDays > 0 ? raw.windowDays : null,
   };
 }
 
