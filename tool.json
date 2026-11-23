@@ -1,0 +1,35 @@
+{
+  "id": "eventradar",
+  "title": "Event Radar",
+  "description": "Find shows and community events in 37 Canadian cities and save outings from several cities to one calendar.",
+  "category": "media",
+  "tags": [
+    "halifax",
+    "vancouver",
+    "langley",
+    "venue",
+    "theatre",
+    "shows",
+    "tickets",
+    "ics",
+    "Canada",
+    "Toronto",
+    "Montréal",
+    "Calgary",
+    "Ottawa",
+    "St. John’s",
+    "Iqaluit",
+    "Whitehorse",
+    "Yellowknife",
+    "calendar"
+  ],
+  "icon": "calendar-days",
+  "url": "/eventradar/",
+  "source": "https://github.com/jsdyer/eventradar",
+  "hosting": "project",
+  "access": "browser",
+  "data_info": {
+    "mode": "live",
+    "detail": "Has Things supplies local showtimes across all ten provinces and three territories. Langley links to venue calendars."
+  }
+}
