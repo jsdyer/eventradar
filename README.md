@@ -1,7 +1,7 @@
 # Event Radar
 
 <!-- coolcode:guide -->
-Choose a city, filter its showtimes and add events from several cities to one downloadable calendar. Plans and imported calendars last only for the current tab; download before leaving and check organizer details for unlisted times or changed availability.
+Use the city picker at the top or open [upcoming events in Halifax](https://coolcode.ca/eventradar/?city=halifax). Filter the showtimes and add events from several cities to one downloadable calendar. Plans and imported calendars last only for the current tab; download before leaving and check organizer details for unlisted times or changed availability.
 <!-- /coolcode:guide -->
 
 Browse upcoming events in 37 Canadian cities across all ten provinces and three territories using [Has Things](https://hasthings.com/) city feeds. Choose a city grouped by province or territory, filter its showtimes, then add selections from several cities to one calendar. A URL such as [St. John’s](https://coolcode.ca/eventradar/?city=st-johns) opens its city directly. Langley has a venue-calendar directory. Listings can arrive with an unknown clock time, cancellation, postponement, or sellout. Verify details and availability with the organizer.

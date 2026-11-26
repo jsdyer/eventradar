@@ -313,6 +313,13 @@ get('more').addEventListener('click', () => {
   render();
   results.children[previous]?.querySelector('button')?.focus();
 });
+document.querySelector('.example-city').addEventListener('click', event => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  cityPicker.value = 'halifax';
+  cityPicker.dispatchEvent(new Event('change'));
+  get('view-heading').focus();
+});
 refresh.addEventListener('click', () => loadFeed(region, true));
 get('download').addEventListener('click', downloadPlans);
 get('ical').addEventListener('change', event => openCalendars(event.target.files));

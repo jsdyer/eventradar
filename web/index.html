@@ -12,25 +12,27 @@
   <meta property="og:description" content="Explore 37 city feeds, check showtimes and save an outing to your calendar.">
   <meta property="og:url" content="https://coolcode.ca/eventradar/">
   <meta property="og:type" content="website">
-  <script defer src="/assets/tool-metrics.js"></script>
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.mjs"></script>
+  <script defer src="/assets/tool-metrics.js" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="./style.css?v=city-picker">
+  <script type="module" src="./app.mjs?v=city-picker"></script>
 </head>
 <body>
   <a class="skip" href="#workbench">Skip to event discovery</a>
   <header class="masthead"><div class="site"><a class="brand" href="https://coolcode.ca/"><span aria-hidden="true">&gt;_</span>CoolCode.ca</a><nav aria-label="Help"><a href="#calendars">Venue calendars</a></nav></div></header>
   <section class="hero"><div class="site">
-    <p class="eyebrow">Local events</p>
-    <h1>Event Radar<span>.</span></h1>
-    <p>Find shows and community events in 37 Canadian cities across all ten provinces and three territories. Pick a city, check the local showtime and save the outing to your calendar.</p>
+    <p class="eyebrow">Event Radar</p>
+    <h1>Find Canadian Events by City</h1>
+    <p>Explore shows and community events in 37 Canadian cities. Choose a city for the next two weeks of listings, then save an outing to your calendar.</p>
+      <div class="region-picker">
+        <label for="region">Choose a city or calendar</label>
+        <select id="region"><option value="vancouver">Metro Vancouver</option></select>
+      </div>
+    <a class="example-city" href="?city=halifax#workbench">Browse Halifax events</a>
   </div></section>
   <main class="site" id="workbench">
     <section class="panel filters-panel" aria-label="Filter events">
-      <div class="results-head"><h2 id="view-heading">Explore events</h2><button type="button" class="secondary" id="refresh">Refresh live listings</button></div>
-      <div class="region-picker">
-        <label for="region">City or calendar</label>
-        <select id="region"><option value="vancouver">Metro Vancouver</option></select>
-      </div>
+      <div class="results-head"><h2 id="view-heading" tabindex="-1">Explore events</h2><button type="button" class="secondary" id="refresh">Refresh live listings</button></div>
+
       <div class="control-grid">
         <div><label for="event-query">Title, venue or tag</label><input type="search" id="event-query" placeholder="Try theatre, Linux or library"></div>
         <div><label for="when">When</label><select id="when"><option value="14">Next 14 days</option><option value="1">Today</option><option value="7">Next 7 days</option><option value="30">Next 30 days</option><option value="all">All available dates</option></select></div>
